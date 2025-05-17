@@ -5,12 +5,11 @@ const std::string Game::WINDOW_TITLE = "Jump Particles";
 const sf::Vector2u Game::INITIAL_WINDOW_SIZE = {720u, 480u};
 const unsigned int Game::FRAME_RATE_LIMIT = 60u;
 
-sf::RenderWindow Game::m_window(sf::VideoMode(INITIAL_WINDOW_SIZE), WINDOW_TITLE);
-
 const sf::Vector2f GRAVITY_ACCELERATION = {0.f, 182.f};
 
 Game::Game()
-    : m_particle({INITIAL_WINDOW_SIZE.x / 2.0f, INITIAL_WINDOW_SIZE.y / 2.0f}, {120.f, 0.f}, GRAVITY_ACCELERATION, 20.0f, sf::Color::Green)
+    : m_window(sf::VideoMode(INITIAL_WINDOW_SIZE), WINDOW_TITLE),
+      m_particle({INITIAL_WINDOW_SIZE.x / 2.0f, INITIAL_WINDOW_SIZE.y / 2.0f}, {120.f, 0.f}, GRAVITY_ACCELERATION, 20.0f, sf::Color::Green, m_window)
 {
     m_window.setTitle(WINDOW_TITLE);
     m_window.setFramerateLimit(FRAME_RATE_LIMIT);

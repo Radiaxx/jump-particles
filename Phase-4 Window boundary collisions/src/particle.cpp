@@ -1,15 +1,17 @@
 #include "particle.hpp"
-#include "game.hpp"
 
-const float RESTITUTION = 0.8f;        // Coefficient of restitution for bounciness (0 = no bounce, 1 = perfect bounce)
-const float GROUND_FRICTION = 0.9f;    // Coefficient of friction (1 = no friction, 0 = full friction)
-const float VELOCITY_THRESHOLD = 0.1f; // Threshold for stopping the particle
+const float RESTITUTION = 0.8f;          // Coefficient of restitution for bounciness (0 = no bounce, 1 = perfect bounce)
+const float GROUND_FRICTION = 0.97f;     // Coefficient of friction (1 = no friction, 0 = full friction)
+const float GROUND_THRESHOLD = 0.1f;     // Threshold for considering the particle as grounded
+const float VELOCITY_X_THRESHOLD = 0.1f; // Threshold for stopping the particle
+const float VELOCITY_Y_THRESHOLD = 3.f;  // Threshold for stopping the particle
 
-Particle::Particle(sf::Vector2f position, sf::Vector2f velocity, sf::Vector2f accelleration, float radius, sf::Color color)
+Particle::Particle(sf::Vector2f position, sf::Vector2f velocity, sf::Vector2f accelleration, float radius, sf::Color color, const sf::RenderTarget &target)
     : m_position(position),
       m_velocity(velocity),
       m_acceleration(accelleration),
-      m_radius(radius)
+      m_radius(radius),
+      m_target(target)
 {
     m_shape.setRadius(radius);
     m_shape.setOrigin({radius, radius});
@@ -19,12 +21,29 @@ Particle::Particle(sf::Vector2f position, sf::Vector2f velocity, sf::Vector2f ac
 
 void Particle::update(float deltaTime)
 {
+    const sf::Vector2u &targetSize = m_target.getSize();
+
+    if (std::abs(m_velocity.x) < VELOCITY_X_THRESHOLD)
+    {
+        m_velocity.x = 0.f;
+    }
+
+    if (std::abs(m_velocity.y) < VELOCITY_Y_THRESHOLD)
+    {
+        m_velocity.y = 0.f;
+    }
+
+    // If sliding on the ground, slow down the horizontal velocity
+    if (m_isGrounded)
+    {
+        m_velocity.x *= GROUND_FRICTION;
+    }
+
     m_velocity += m_acceleration * deltaTime;
     m_position += m_velocity * deltaTime;
+    handleBoundaryCollisions();
 
     m_shape.setPosition(m_position);
-
-    handleBoundaryCollisions();
 }
 
 void Particle::draw(sf::RenderTarget &target) const
@@ -34,7 +53,7 @@ void Particle::draw(sf::RenderTarget &target) const
 
 void Particle::handleBoundaryCollisions()
 {
-    const sf::Vector2u &targetSize = Game::getWindow().getSize();
+    const sf::Vector2u &targetSize = m_target.getSize();
 
     // Left and right boundaries
     if (m_position.x - m_radius < 0.f)
@@ -59,26 +78,13 @@ void Particle::handleBoundaryCollisions()
         m_position.y = targetSize.y - m_radius;
         m_velocity.y *= -RESTITUTION;
 
-        // Stop the particle if its vertical velocity is below the threshold
-        if (std::abs(m_velocity.y) < VELOCITY_THRESHOLD)
+        if (std::abs(m_velocity.y) < VELOCITY_Y_THRESHOLD)
         {
-            m_velocity.y = 0.f;
             m_isGrounded = true;
         }
-        else
-        {
-            m_isGrounded = false;
-        }
-
-        // If sliding on the ground, slow down the horizontal velocity
-        if (m_isGrounded)
-        {
-            m_velocity.x *= GROUND_FRICTION;
-
-            if (std::abs(m_velocity.x) < VELOCITY_THRESHOLD)
-            {
-                m_velocity.x = 0.f;
-            }
-        }
+    }
+    else
+    {
+        m_isGrounded = false;
     }
 }

@@ -6,7 +6,7 @@
 class Particle
 {
 public:
-    Particle(sf::Vector2f position, sf::Vector2f initialVelocity, sf::Vector2f accelleration, float radius, sf::Color color);
+    Particle(sf::Vector2f position, sf::Vector2f initialVelocity, sf::Vector2f accelleration, float radius, sf::Color color, const sf::RenderTarget &target);
 
     void update(float deltaTime);
     void draw(sf::RenderTarget &target) const;
@@ -19,6 +19,7 @@ private:
 
     float m_radius;
     sf::CircleShape m_shape;
+    const sf::RenderTarget &m_target;
 
     void handleBoundaryCollisions();
 };

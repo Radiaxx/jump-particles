@@ -18,6 +18,10 @@ The particle is now confined within the window boundaries, making it bounce off 
     *   `update()` now calls `handleBoundaryCollisions()`.
 *   **Boundary Data:** Window dimensions made accessible to `Particle` (via static `sf::RenderWindow` in `Game`).
 
+**Encoutered issues:**
+
+Getting the grounded logic to work took some time. The issue was that the gravitational acceleration was pulling the particle down so quickly that, even with velocity damping, it never reached the point where it could nullify its vertical velocity.
+
 **Result at the end of phase 4:**
 
 Executing the program will now:
