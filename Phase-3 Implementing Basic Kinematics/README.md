@@ -1,6 +1,6 @@
 # Jump Particles - 2D Particle Simulator
 
-## Phase 3: Implementing Basic Kinematics
+## Phase 3: Implementing basic kinematics
 
 Enables the `Particle` class to move dynamically. Velocity and acceleration are added, and a constant gravitational force is applied, causing the particle to accelerate downwards.
 
