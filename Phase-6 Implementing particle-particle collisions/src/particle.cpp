@@ -1,10 +1,10 @@
 #include "particle.hpp"
 
-const float RESTITUTION = 0.8f;          // Coefficient of restitution for bounciness (0 = no bounce, 1 = perfect bounce)
-const float GROUND_FRICTION = 0.97f;     // Coefficient of friction (1 = no friction, 0 = full friction)
-const float GROUND_THRESHOLD = 0.1f;     // Threshold for considering the particle as grounded
-const float VELOCITY_X_THRESHOLD = 0.1f; // Threshold for stopping the particle
-const float VELOCITY_Y_THRESHOLD = 3.f;  // Threshold for stopping the particle
+const float RESTITUTION = 0.8f;           // Coefficient of restitution for bounciness (0 = no bounce, 1 = perfect bounce)
+const float GROUND_FRICTION = 0.97f;      // Coefficient of friction (1 = no friction, 0 = full friction)
+const float GROUND_THRESHOLD = 0.1f;      // Threshold for considering the particle as grounded
+const float VELOCITY_X_THRESHOLD = 0.1f;  // Threshold for stopping the particle
+const float VELOCITY_Y_THRESHOLD = 0.01f; // Threshold for stopping the particle
 
 Particle::Particle(sf::Vector2f position, sf::Vector2f velocity, sf::Vector2f accelleration, float radius, sf::Color color, const sf::RenderTarget &target)
     : m_position(position),
@@ -41,7 +41,7 @@ void Particle::update(float deltaTime)
     else
     {
         m_velocity += m_acceleration * deltaTime;
-        m_position += m_velocity * deltaTime;
+        m_position = m_position + m_velocity * deltaTime;
     }
 
     handleBoundaryCollisions();

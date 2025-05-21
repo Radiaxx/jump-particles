@@ -5,6 +5,8 @@ const size_t PARTICLE_COUNT = 100;
 const float PARTICLE_SPAWN_INTERVAL = 0.15f; // seconds
 const sf::Vector2f PARTICLE_SPAWN_POSITION = {39.f, 30.f};
 
+const size_t PHYSICS_SUBSTEPS = 16;
+
 Game::Game(std::string title, sf::Vector2u initialWindowSize, unsigned int frameRateLimit)
     : m_window(sf::VideoMode(initialWindowSize), title),
       m_particleSystem(
@@ -43,8 +45,13 @@ void Game::handleEvents()
 
 void Game::update(float deltaTime)
 {
-    m_particleSystem.update(deltaTime);
-    m_physicsSolver.update(deltaTime);
+    const float subStepDeltaTime = deltaTime / PHYSICS_SUBSTEPS;
+
+    for (int i = 0; i < PHYSICS_SUBSTEPS; ++i)
+    {
+        m_particleSystem.update(subStepDeltaTime);
+        m_physicsSolver.update(subStepDeltaTime);
+    }
 }
 
 void Game::render()

@@ -68,7 +68,7 @@ void ParticleSystem::spawnParticle()
 
     float newRadius = 10.0f + getRandomFloat(0.f, 10.f);
     sf::Color newColor = getRandomColor();
-    sf::Vector2f initialVelocity = {182.f, 136.5f};
+    sf::Vector2f initialVelocity = {227.5f, 136.5f};
 
     m_particles.emplace_back(
         m_spawnPosition,
