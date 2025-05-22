@@ -1,0 +1,137 @@
+#include "particleSystem.hpp"
+
+const double PI = 3.1415926535;
+const float DENSITY = 1.f;
+
+ParticleSystem::ParticleSystem(
+    size_t totalParticlesToSpawn,
+    float spawnIntervalSeconds,
+    sf::Vector2f spawnPosition,
+    sf::Vector2f gravity,
+    const sf::RenderTarget &target)
+    : m_totalParticlesToSpawn(totalParticlesToSpawn),
+      m_gravity(gravity),
+      m_initialGravity(gravity),
+      m_spawnInterval(spawnIntervalSeconds),
+      m_spawnPosition(spawnPosition),
+      m_initialSpawnPosition(spawnPosition),
+      m_renderTargetRef(target)
+{
+    std::random_device rd;
+    m_rng.seed(rd());
+
+    if (m_totalParticlesToSpawn > 0)
+    {
+        m_particles.reserve(m_totalParticlesToSpawn);
+    }
+}
+
+void ParticleSystem::update(float deltaTime)
+{
+    trySpawnParticles(deltaTime);
+
+    for (Particle &p : m_particles)
+    {
+        p.update(deltaTime);
+    }
+}
+
+void ParticleSystem::draw(sf::RenderTarget &target) const
+{
+    for (const Particle &p : m_particles)
+    {
+        p.draw(target);
+    }
+}
+
+std::vector<Particle> &ParticleSystem::getParticles()
+{
+    return m_particles;
+}
+
+void ParticleSystem::setSpawnPosition(const sf::Vector2f &position)
+{
+    m_spawnPosition = position;
+}
+
+void ParticleSystem::setGravity(const sf::Vector2f &gravity)
+{
+    this->m_gravity = gravity;
+
+    for (Particle &p : m_particles)
+    {
+        p.setAcceleration(gravity);
+    }
+}
+
+void ParticleSystem::addParticlesToSpawn(size_t count)
+{
+    m_totalParticlesToSpawn += count;
+    m_particles.reserve(m_totalParticlesToSpawn);
+}
+
+void ParticleSystem::reset()
+{
+    m_particles.clear();
+    m_spawnedParticlesCount = 0;
+    m_spawnTimer = 0.f;
+    m_gravity = m_initialGravity;
+    m_spawnPosition = m_initialSpawnPosition;
+}
+
+void ParticleSystem::clear()
+{
+    m_particles.clear();
+    m_spawnTimer = 0.f;
+}
+
+void ParticleSystem::trySpawnParticles(float deltaTime)
+{
+    if (m_spawnedParticlesCount >= m_totalParticlesToSpawn)
+    {
+        return;
+    }
+
+    m_spawnTimer += deltaTime;
+    if (m_spawnTimer >= m_spawnInterval)
+    {
+        spawnParticle();
+        m_spawnTimer -= m_spawnInterval; // Subtract instead of reset to compensate overshoot
+    }
+}
+
+void ParticleSystem::spawnParticle()
+{
+    if (m_spawnedParticlesCount >= m_totalParticlesToSpawn)
+    {
+        return;
+    }
+
+    float radius = 8.f + getRandomFloat(0.f, 10.f);
+    float mass = std::pow(radius, 2) * PI * DENSITY;
+    sf::Color color = getRandomColor();
+    sf::Vector2f initialVelocity = {227.5f, 136.5f};
+
+    m_particles.emplace_back(
+        m_spawnPosition,
+        initialVelocity,
+        m_gravity,
+        mass,
+        radius,
+        color,
+        m_renderTargetRef);
+
+    ++m_spawnedParticlesCount;
+}
+
+float ParticleSystem::getRandomFloat(float min, float max)
+{
+    std::uniform_real_distribution<float> dist(min, max);
+    return dist(m_rng);
+}
+
+sf::Color ParticleSystem::getRandomColor()
+{
+    std::uniform_int_distribution<int> dist(25, 255);
+    return sf::Color(dist(m_rng), dist(m_rng), dist(m_rng));
+}
