@@ -2,6 +2,8 @@
 
 ## Phase 10: Adding Magnet
 
+![](result.gif)
+
 Added "magnet" feature, allowing users to attract particles towards the mouse cursor by holding down the left mouse button.
 
 **Key Implementations in this Phase:**

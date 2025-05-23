@@ -2,6 +2,8 @@
 
 ## Phase 3: Implementing basic kinematics
 
+![](result.gif)
+
 Enables the `Particle` class to move dynamically. Velocity and acceleration are added, and a constant gravitational force is applied, causing the particle to accelerate downwards.
 
 **Key implementations in this phase:**

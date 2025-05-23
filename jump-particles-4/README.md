@@ -2,6 +2,8 @@
 
 ## Phase 4: Window boundary collisions
 
+![](result.gif)
+
 The particle is now confined within the window boundaries, making it bounce off the edges. Logic is also introduced to allow the particle to come to rest on the "ground" (bottom boundary) and apply friction to sliding.
 
 **Key implementations in this phase:**

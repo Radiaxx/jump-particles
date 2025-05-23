@@ -2,6 +2,8 @@
 
 ## Phase 2: Drawing a single static particle
 
+![](result.png)
+
 This phase introduces the `Particle` and renders a single, stationary particle at the center of the window.
 
 **Key implementations in this phase:**

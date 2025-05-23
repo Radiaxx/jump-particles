@@ -2,6 +2,8 @@
 
 ## Phase 6: Implementing particle-particle collisions
 
+![](result.gif)
+
 **Key implementations in this phase:**
 
 *   **New `PhysicsSolver` Class (`physicsSolver.hpp`, `physicsSolver.cpp`):**

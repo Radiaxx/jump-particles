@@ -2,6 +2,8 @@
 
 ## Phase 1: SFML window setup
 
+![](result.png)
+
 This initial phase establishes the structure of the application and gets a basic SFML window up and running where the core logic is encapsulated within a `Game` class.
 
 **Key implementations in this phase:**

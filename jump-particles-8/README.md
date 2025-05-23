@@ -2,6 +2,12 @@
 
 ## Phase 8: UI - Reset and Clear sandbox buttons
 
+### Reset
+![](result-reset.gif)
+
+### Clear
+![](result-clear.gif)
+
 Introduction of UI elements like clickable buttons, allowing the user to reset and clear the particles.
 
 **Key Implementations in this Phase:**

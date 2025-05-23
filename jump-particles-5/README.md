@@ -2,6 +2,8 @@
 
 ## Phase 5: Handling multiple particles
 
+![](result.gif)
+
 The capability to simulate multiple particles simultaneously has been introduced. A new `ParticleSystem` class is implemented to manage the creation, update, and rendering of a collection of particles.
 
 **Key implementations in this phase:**

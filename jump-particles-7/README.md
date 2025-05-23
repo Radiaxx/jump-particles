@@ -1,6 +1,8 @@
 # Jump Particles - 2D Particle Simulator
 
-## Phase 7: Implementing particle-particle collisions
+## Phase 7: Adding Mass
+
+![](result.gif)
 
 Mass has been added to particles. Mass is now calculated proportionally to their size (area), and collision responses between particles take their respective masses into account.
 

@@ -2,6 +2,15 @@
 
 ## Phase 9: UI Options and Controls
 
+### Disable gravity
+![](result-disable-gravity.gif)
+
+### Negative gravity
+![](result-negative-gravity.gif)
+
+### Add particles
+![](result-add-particles.gif)
+
 Adds user control over the simulation by adding more UI buttons for various options, including manipulating gravity and adding more particles on demand.
 
 **Key Implementations in this Phase:**
